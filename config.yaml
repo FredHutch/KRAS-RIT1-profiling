@@ -1,0 +1,15 @@
+fastqDir: /fh/fast/berger_a/SR/ngs/illumina/alo2/190809_A00613_0049_AHF3YHDRXX/Unaligned/Projects_alo2/
+fastqfofn: fastqs.fofn
+dataName: AALE_KRAS-RIT1
+bamDir: STAR/hg19/bam
+covDir: STAR/hg19/coverages
+metricsDir: STAR/hg19/metrics
+STAR: /home/alo2/apps/STAR/STAR-2.5.3a/source/STAR
+STARgenome: /fh/fast/berger_a/grp/bergerlab_shared/Projects/RNA_eVIP/reference/hg19/Sequence/STAR
+picardTools: /home/solexa/apps/picard/picard-tools-1.114
+gtf: /fh/fast/berger_a/grp/bergerlab_shared/Projects/RNA_eVIP/reference/hg19/Annotation/gencode.v19.annotation.gtf
+readLength: 50
+flowCell: 190809_A00613_0049_AHF3YHDRXX
+referenceFasta: /fh/fast/berger_a/grp/bergerlab_shared/Projects/RNA_eVIP/reference/hg19/Sequence/genome.fa
+rMATS: /home/alo2/apps/rMATS.4.0.2/rMATS-turbo-Linux-UCS4/rmats.py
+rMATSdir: rMATS
