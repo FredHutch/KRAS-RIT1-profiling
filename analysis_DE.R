@@ -1,14 +1,17 @@
+#######################################################################
+#### Analysis of differentially expressed genes
+#######################################################################
 
-
+## Includes:
+## - Plotting edgeR results
 ## - Gene set analysis of DE genes
-## - Looking at individual genes
+## - Look at individual genes
 
 #######################################################################
 #### Set up
 #######################################################################
 
 source("../scripts/R/load.R")
-
 ## Inputs
 dataDirs <- c("./")
 ## Outputs
@@ -382,20 +385,20 @@ for (gene in gene_list_kras) {
         filter(!group=="Renilla") %>%
         group_by(group) %>%
         summarize(log2FC = mean(logFC))
-    ## df_plot$Perturbation <- as.factor(df_plot$Perturbation)
-    ## perturb_names <- gsub("-", "\n", levels(df_plot$Perturbation))
-    ## g <- ggplot(df_plot, aes(reorder(Perturbation, -logFC), logFC)) +
-    ##     geom_bar(stat = "identity", width = 0.7) +
-    ##     scale_x_discrete(name = NULL) +
-    ##     scale_y_continuous(name = bquote("log"[2]*"FC"), expand = c(0,0)) +
-    ##     ggtitle(gene) +
-    ##     theme_classic(base_size = 24) +
-    ##     theme(plot.title = element_text(hjust = 0.5, vjust = 0.5),
-    ##           axis.ticks.x = element_blank())
-    ## ggsave(plot = g, filename = paste0("single-gene-logFC/", gene, "-logFC.pdf"),
-    ##        device = "pdf",
-    ##        width = 6, height = 6,
-    ##        path = resultsDir)
+    df_plot$Perturbation <- as.factor(df_plot$Perturbation)
+    perturb_names <- gsub("-", "\n", levels(df_plot$Perturbation))
+    g <- ggplot(df_plot, aes(reorder(Perturbation, -logFC), logFC)) +
+        geom_bar(stat = "identity", width = 0.7) +
+        scale_x_discrete(name = NULL) +
+        scale_y_continuous(name = bquote("log"[2]*"FC"), expand = c(0,0)) +
+        ggtitle(gene) +
+        theme_classic(base_size = 24) +
+        theme(plot.title = element_text(hjust = 0.5, vjust = 0.5),
+              axis.ticks.x = element_blank())
+    ggsave(plot = g, filename = paste0("single-gene-logFC/", gene, "-logFC.pdf"),
+           device = "pdf",
+           width = 6, height = 6,
+           path = resultsDir)
 }
 
 
@@ -480,12 +483,6 @@ g <- ggplot(df_plot) +
     scale_size_area(limits = c(0, 4), oob = squish,
                     max_size = 10,
                     name = NULL) +
-##     scale_x_discrete(name = NULL) +
-## #                     breaks = c(perturbation_names)) +
-##     scale_y_discrete(name = NULL
-## #                     labels = c("KRAS\nSignaling\nDown",
-## #                                "KRAS\nSignaling\nUp")
-##                      ) +
     coord_fixed() +
     theme_classic()
 ggsave(g, file = paste0("/gene-set-analysis/RIT1-all_KRAS-muts_hallmarks.pdf"),
@@ -538,7 +535,10 @@ df_inflam <- df_DE_KRASvRIT1 %>%
     filter(FDR < 0.05) %>%
     filter(abs(logFC) > 1)
 
-## ASSUMES WE ALSO HAVE THE PROTEOMIC DATA. NEED TO LOAD.
+#######################################################################
+#### Compare with proteomics data
+#######################################################################
+
 load(file = "../data/phosphoproteomics/df_proteome.RData")
 
 plot_KRASvRIT1_DE <- function(df, genesetname) {
@@ -665,8 +665,6 @@ plot_DE_bars_multiple_genes <- function(gene_list) {
                          breaks = gene_list) +
         scale_y_continuous(name = bquote("log"[2]*"FC"),
                             limits = c(min(df_plot$logFC)-1, max(df_plot$logFC)+1),
-## ##                           breaks = c(0, 2, 4, 6, 8),
-## ##                           expand = c(0,0)) +
                             ) +
         guides(
             fill = guide_legend(
