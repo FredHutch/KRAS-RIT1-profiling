@@ -4,6 +4,7 @@
 
 ## ChIP-X Enrichment Analysis Version 3
 ## Prep for and use ChEA3's REST API
+## (Keenan et al., Nucleic Acids Research, 2019)
 
 #######################################################################
 #### Set up
@@ -52,21 +53,6 @@ bar <- df_DE %>%
     filter(FDR < 0.05)
 write(bar$Geneid, file = paste0(resultsDir, "/diff-expression/KRAS-G12V_Renilla_forChEA.txt"))
 
-#### This doesn't work
-## DE of KRAS G12V and Q61H vs Renilla
-KRAS_idx <- c(which(grepl("KRAS-G12V", colnames(design))),
-              which(grepl("KRAS-Q61H", colnames(design))))
-control_idx <- c(which(grepl("Renilla", colnames(design))))
-contrast <- rep(0, length(colnames(design)))
-contrast[KRAS_idx] <- 1
-contrast[control_idx] <- -1
-print(contrast)
-qlf <- glmQLFTest(fit, contrast=contrast)
-tt <- topTags(qlf, n=dim(fit)[1], sort.by="PValue")
-sigTestResults <- decideTests(qlf, p.value = 0.01, adjust.method = "BH")
-print(head(sigTestResults))
-print(summary(sigTestResults))
-
 #######################################################################
 #### Each vs Renilla for ChEA TF analysis
 #######################################################################
@@ -95,8 +81,6 @@ for (perturb in perturbations) {
     print(length(results))
     for (analysis in names(results)) {
         df_save <- results[[analysis]]
-#        print(head(df_save))
-        # print(gsub("--", "_", analysis))
         filename <- paste0(resultsDir, "/", perturb, "_Renilla_", gsub("--", "_", analysis), ".tsv")
         write.table(df_save, file = filename, sep = "\t", quote = FALSE,
                     row.names = FALSE)

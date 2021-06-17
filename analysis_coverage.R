@@ -12,7 +12,6 @@ for (sample in c("KRAS-G12V_1", "KRAS-G12V_2", "KRAS-G12V_3")) {
     names(mpileup) <- c("Chromosome", "Pos", "RefBase", "Depth", "ReadBases", "ReadBaseQualities")
     mpileup <- as_tibble(mpileup)
 #    print(mpileup[2,4]) # Get total depth
-#    print(str_length(mpileup[2, 5]))
     n_muts <- str_count(mpileup[2, 5], "a")
     df <- data.frame(Sample = sample,
                      Depth = mpileup[2,4],
@@ -41,7 +40,6 @@ for (variant in c("KRAS-G12V", "KRAS-Q61H", "RIT1-M90I")) {
         dplyr::select(-c("mut", "ref", "n_reads")) %>%
         distinct()
     print(variant)
-    ## print(df_plot)
     g <- ggplot(df_plot, aes(x = bamfile, y = percent_reads, fill = allele)) +
         geom_bar(stat = "identity", width = 0.6) +
         scale_fill_manual(values = c("#009E73", "grey"),
